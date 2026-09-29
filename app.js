@@ -66,7 +66,13 @@ function renderThumbs() {
   $("#thumbs").innerHTML = [0, 1, 2, 3].map(i => `<div class="thumb">${S.photos[i] ? `<img src="${S.photos[i].src}" alt="">` : ""}<span class="tag">#${i + 1}</span></div>`).join("");
 }
 function renderReview() {
-  $("#rvGrid").innerHTML = [0, 1, 2, 3].map(i => `<div class="rv-card"><div class="ph"><img src="${S.photos[i].src}" alt=""><span class="tag">#${i + 1}</span></div><button class="btn" data-i="${i}">↻ Retake this photo</button></div>`).join("");
+  $("#rvGrid").innerHTML = [0, 1, 2, 3].map(i => {
+    const media = S.clips[i]
+      ? `<video src="${S.clips[i]}" poster="${S.photos[i].src}" autoplay muted loop playsinline></video>`
+      : `<img src="${S.photos[i].src}" alt="">`;
+    return `<div class="rv-card"><div class="ph">${media}<span class="tag">#${i + 1}</span></div><button class="btn" data-i="${i}">↻ Retake this photo</button></div>`;
+  }).join("");
+  $$("#rvGrid video").forEach(v => v.play().catch(() => {}));
   $$("#rvGrid [data-i]").forEach(b => b.onclick = () => { S.retake = +b.dataset.i; go("capture"); });
 }
 
