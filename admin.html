@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — snappie.</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+</head>
+<body>
+<header><span class="logo">snappie. <b>admin</b></span><button id="logout" hidden>Keluar</button></header>
+
+<main>
+  <section id="login">
+    <form id="loginForm">
+      <h2>Masuk sebagai admin</h2>
+      <label>Email<input id="email" type="email" required autocomplete="username"></label>
+      <label>Password<input id="password" type="password" required autocomplete="current-password"></label>
+      <button class="dark" type="submit">Masuk</button>
+      <p id="loginErr" class="err"></p>
+    </form>
+  </section>
+
+  <section id="panel" hidden>
+    <div class="toolbar">
+      <h2>Strip Layout Template</h2>
+      <button class="lime" id="newBtn">+ Template Baru</button>
+    </div>
+    <p id="listMsg" class="hint"></p>
+    <div id="list"></div>
+
+    <div id="editor" hidden>
+      <h3 id="formTitle">Template Baru</h3>
+      <div class="grid2">
+        <div class="fields">
+          <label>ID (unik, tanpa spasi, huruf kecil)<input id="fId" placeholder="mis. wedding-gold"></label>
+          <label>Nama tombol<input id="fName" placeholder="mis. Wedding Gold"></label>
+          <div class="two"><label>Lebar (px)<input id="fW" type="number" value="600"></label>
+          <label>Tinggi (px)<input id="fH" type="number" value="1792"></label></div>
+          <label>Tata Letak Awal (menyusun ulang 4 kotak otomatis)
+            <select id="fLayout">
+              <option value="">— pilih untuk atur ulang posisi —</option>
+              <option value="strip">Strip Vertikal (4 ke bawah)</option>
+              <option value="grid">Grid 2×2 (landscape)</option>
+            </select>
+          </label>
+          <div class="two"><label>Warna latar<input id="fBg" type="color" value="#ffffff"></label>
+          <label>Warna tulisan<input id="fInk" type="color" value="#111111"></label></div>
+          <div class="two"><label>Posisi Y tulisan<input id="fTy" type="number" value="0"></label>
+          <label>Ukuran tulisan (0=sembunyikan)<input id="fFs" type="number" value="0"></label></div>
+          <div class="two"><label>Urutan tampil<input id="fSort" type="number" value="0"></label>
+          <label class="chk"><input id="fActive" type="checkbox" checked> Tampilkan ke pengguna</label></div>
+          <label>Frame PNG (latar transparan, ukuran = lebar × tinggi di atas)
+            <input id="fFrame" type="file" accept="image/png"></label>
+          <p class="hint">Ubah Lebar/Tinggi dulu sebelum mengupload PNG, supaya area geser di kanan sesuai proporsi.</p>
+        </div>
+        <div class="editorSide">
+          <div id="slotArea"><img id="slotBg" alt=""><div class="slotbox" data-i="0"><i class="num">1</i><span class="handle"></span></div><div class="slotbox" data-i="1"><i class="num">2</i><span class="handle"></span></div><div class="slotbox" data-i="2"><i class="num">3</i><span class="handle"></span></div><div class="slotbox" data-i="3"><i class="num">4</i><span class="handle"></span></div></div>
+          <p class="hint">Geser kotak untuk memindah posisi foto #1–#4. Tarik pojok kanan-bawah untuk mengubah ukurannya.</p>
+          <button type="button" id="resetSlots" class="resetBtn">↺ Reset Posisi (kembali ke saat dibuka)</button>
+          <div id="slotNums"></div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="dark" id="saveTpl">Simpan Template</button>
+        <button id="cancelTpl">Batal</button>
+      </div>
+      <p id="formMsg" class="hint"></p>
+    </div>
+  </section>
+</main>
+<script src="config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
