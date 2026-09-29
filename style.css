@@ -128,3 +128,4 @@ nav a:active{opacity:.55}
 .seg{flex:1;margin-left:0}
 .seg button{flex:1}
 @media(max-width:1024px){.row{padding-right:0}}
+.btn svg{display:block}
