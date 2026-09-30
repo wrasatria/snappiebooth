@@ -143,4 +143,7 @@ nav a:active{opacity:.55}
   .duo .btn{font-size:19px}
   #liveBtn{font-size:20px}
   .stage,.ph,.thumb{transform:translateZ(0)}
+  .stage{clip-path:inset(0 round clamp(32px,4.2vw,60px))}
+.ph{clip-path:inset(0 round clamp(36px,4.2vw,60px))}
+.thumb{clip-path:inset(0 round 30px)}
 }
