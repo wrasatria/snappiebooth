@@ -70,7 +70,7 @@ function renderReview() {
     const media = S.clips[i]
       ? `<video src="${S.clips[i]}" poster="${S.photos[i].src}" autoplay muted loop playsinline></video>`
       : `<img src="${S.photos[i].src}" alt="">`;
-    return `<div class="rv-card"><div class="ph">${media}<span class="tag">#${i + 1}</span></div><button class="btn" data-i="${i}">↻ Retake this photo</button></div>`;
+    return `<div class="rv-card"><div class="ph">${media}<span class="tag">#${i + 1}</span></div><button class="btn" data-i="${i}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg> Retake this photo</button></div>`;
   }).join("");
   $$("#rvGrid video").forEach(v => v.play().catch(() => {}));
   $$("#rvGrid [data-i]").forEach(b => b.onclick = () => { S.retake = +b.dataset.i; go("capture"); });
