@@ -142,4 +142,5 @@ nav a:active{opacity:.55}
   .duo{height:60px}
   .duo .btn{font-size:19px}
   #liveBtn{font-size:20px}
+  .stage,.ph,.thumb{transform:translateZ(0)}
 }
