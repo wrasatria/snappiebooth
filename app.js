@@ -102,7 +102,7 @@ function drawStrip(srcs) {
     cx.save(); cx.translate(s.x + s.w / 2, s.y + s.h / 2); cx.rotate((s.r || 0) * Math.PI / 180);
     cx.beginPath(); cx.roundRect(-s.w / 2, -s.h / 2, s.w, s.h, s.radius || 0); cx.clip(); cx.drawImage(tmp, -s.w / 2, -s.h / 2); cx.restore();
   });
-  if (t.frame) { const im = frames[t.id] || (frames[t.id] = Object.assign(new Image(), { src: t.frame })); im.complete && im.naturalWidth && cx.drawImage(im, 0, 0, t.w, t.h); }
+  if (t.frame) { const im = frames[t.id] || (frames[t.id] = Object.assign(new Image(), { crossOrigin: "anonymous", src: t.frame })); im.complete && im.naturalWidth && cx.drawImage(im, 0, 0, t.w, t.h); }
   if (t.fs) { cx.fillStyle = t.ink; cx.textAlign = "center"; cx.font = `800 ${t.fs}px Manrope, sans-serif`; cx.fillText("snappie.", t.w / 2, t.ty); }
 }
 const render = () => drawStrip(S.live && vids.length ? vids : S.photos);
