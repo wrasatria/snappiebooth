@@ -10,11 +10,12 @@ const frames = {};
 /* ---------- navigasi ---------- */
 function go(p) {
   document.body.dataset.page = p;
-  ["home", "capture", "review", "result"].forEach(n => $("#" + n).hidden = n !== p);
+  ["home", "capture", "review", "result", "download"].forEach(n => $("#" + n).hidden = n !== p);
   scrollTo(0, 0);
   p === "capture" ? startCam() : stopCam();
   p === "review" && renderReview();
   p === "result" ? startResult() : stopLoop();
+  p === "download" && startDownloadPage();
 }
 function reset() { S.photos = []; S.clips = []; S.retake = null; }
 $$("[data-start]").forEach(b => b.onclick = () => { reset(); go("capture"); });
@@ -135,6 +136,85 @@ $("#saveVid").onclick = async () => {
   await new Promise(res => { r.onstop = res; r.stop(); });
   dl(URL.createObjectURL(new Blob(ch, { type: MT })), "snappie-" + Date.now() + (MT.includes("mp4") ? ".mp4" : ".webm"));
   S.live = wasLive; syncLoop();
+};
+
+/* ---------- halaman download: animasi printer, zoom, share ---------- */
+$("#goDownload").onclick = () => go("download");
+let dlPhase = "idle", dlTimer = 0;
+const dlBtns = () => $$("#download .dl-actions > button:not(#dlSkip)");
+function setDlPhase(s) {
+  dlPhase = s;
+  const active = s === "printing" || s === "ready" ? s : "idle";
+  $("#dlPrinter").dataset.state = s === "idle" ? "idle" : active;
+  $("#dlStripBtn").dataset.state = active;
+  $("#dlMask").dataset.open = s === "ready";
+  $("#dlStripBtn").tabIndex = s === "ready" ? 0 : -1;
+  $("#dlZoomLink").hidden = s !== "ready";
+  $("#dlSkip").hidden = s !== "printing";
+  const badge = $("#dlBadge");
+  badge.classList.toggle("rdy", s === "ready");
+  badge.classList.toggle("fail", s === "error");
+  dlBtns().forEach(b => b.disabled = s !== "ready");
+  if (s === "ready" && !S.clips.some(Boolean)) $("#saveVid").disabled = true;
+  if (s === "ready") {
+    badge.innerHTML = "<i></i> Your photo strip is ready!";
+    $("#dlSign").innerHTML = "<b>Ready.</b> Take your strip.";
+  } else if (s === "printing") {
+    badge.innerHTML = "<i></i> Printing...";
+    $("#dlSign").textContent = "Your memories are printing...";
+  } else if (s === "error") {
+    badge.innerHTML = "<i></i> Something went wrong";
+    $("#dlSign").textContent = "Paper jam!";
+    $("#dlHeading").innerHTML = "We couldn't<br>print that one.";
+    $("#dlSub").textContent = "Foto gagal dimuat. Coba kembali ke halaman sebelumnya dan pilih ulang.";
+  }
+}
+function startDownloadPage() {
+  window.clearTimeout(dlTimer);
+  $("#dlHeading").innerHTML = "Your memories,<br>freshly printed.";
+  $("#dlSub").textContent = "Foto favoritmu siap disimpan. Download strip-nya dan bawa pulang momennya.";
+  try {
+    drawStrip(S.photos);
+    const url = cv.toDataURL("image/png");
+    $("#dlStripImg").src = url; $("#dlZoomImg").src = url;
+    $("#dlStripBtn").style.aspectRatio = `${S.tpl.w} / ${S.tpl.h}`;
+  } catch (e) { setDlPhase("error"); return; }
+  setDlPhase("idle");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) { setDlPhase("ready"); return; }
+  dlTimer = setTimeout(() => {
+    setDlPhase("printing");
+    dlTimer = setTimeout(() => setDlPhase("ready"), 2600);
+  }, 700);
+}
+$("#dlSkip").onclick = () => { window.clearTimeout(dlTimer); setDlPhase("ready"); };
+$("#dlStripBtn").onclick = () => { if (dlPhase === "ready") openZoom(); };
+$("#dlZoomLink").onclick = openZoom;
+function openZoom() { $("#dlZoomOverlay").hidden = false; }
+$("#dlZoomClose").onclick = $("#dlZoomOverlay").onclick = () => { $("#dlZoomOverlay").hidden = true; };
+$("#dlZoomImg").onclick = e => e.stopPropagation();
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#dlZoomOverlay").hidden) $("#dlZoomOverlay").hidden = true; });
+
+function dlToast(msg) {
+  const t = $("#dlToast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(t._h); t._h = setTimeout(() => t.hidden = true, 2600);
+}
+$("#dlShare").onclick = async () => {
+  if (dlPhase !== "ready") return;
+  try {
+    drawStrip(S.photos);
+    const blob = await new Promise(res => cv.toBlob(res, "image/png"));
+    const file = new File([blob], "snappie-strip.png", { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: "My snappie strip", text: "Fresh off the printer." });
+    } else if (navigator.share) {
+      await navigator.share({ title: "My snappie strip", url: location.origin });
+    } else {
+      await navigator.clipboard.writeText(location.origin);
+      dlToast("Link disalin. Berbagi langsung tidak didukung di browser ini, silakan download lalu kirim manual.");
+    }
+  } catch (e) { if (e.name !== "AbortError") dlToast("Gagal berbagi. Coba download saja."); }
+  render();
 };
 
 /* ---------- pengaturan countdown ---------- */
