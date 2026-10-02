@@ -141,7 +141,7 @@ $("#saveVid").onclick = async () => {
 /* ---------- halaman download: animasi printer, zoom, share ---------- */
 $("#goDownload").onclick = () => go("download");
 let dlPhase = "idle", dlTimer = 0;
-const dlBtns = () => $$("#download .dl-actions > button:not(#dlSkip)");
+const dlBtns = () => $$("#download .dl-actions button:not(#dlSkip)");
 function setDlPhase(s) {
   dlPhase = s;
   const active = s === "printing" || s === "ready" ? s : "idle";
