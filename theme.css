@@ -1,0 +1,264 @@
+/* =====================================================================
+   THEME LAYER — carries the homepage look (burgundy / cream / serif)
+   to capture, review, result and download. Visual only: no layout
+   structure, ids, or behavior are changed. Load after style.css and home.css.
+   Removing this file restores the previous look.
+   ===================================================================== */
+:root{--line:rgba(84,23,17,.18);--paper:#fffdf8}
+body{background:var(--iv);color:var(--cc)}
+body:not([data-page=home]){background:radial-gradient(120% 60% at 50% 0,#fff 0,var(--iv) 55%,var(--cr) 100%) fixed}
+
+/* header + footer (same as home, now on every page) */
+body header{height:88px;padding:0 var(--m);margin:0;border-bottom:1px solid rgba(84,23,17,.15);background:var(--iv)}
+body .logo img{height:44px;width:auto;display:block}
+body nav a::after{background:var(--ch)}
+body .pill{height:44px;padding:0 22px;gap:12px;border-color:var(--bd);color:var(--bd);font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+body .pill i,body .pill i::after{background:var(--ch)}
+body footer{margin:32px 0 0;padding:0 var(--m);height:auto;min-height:96px;gap:16px 32px;flex-wrap:wrap;background:var(--cc);color:var(--cr)}
+body footer b{font-weight:500}
+[data-page=home] footer{margin:0}
+@media(max-width:1024px){body header{height:72px;padding-top:0}body .logo img{height:36px}}
+
+/* buttons */
+body .btn{background:var(--paper);color:var(--bd);font-weight:500}
+body .btn:focus-visible,body .opt:focus-visible,body .dlrow:focus-visible,body .seg button:focus-visible{outline-color:var(--ch)}
+body .lime{background:var(--bd);color:var(--cr);box-shadow:0 5px 0 rgba(0,0,0,.25)}
+body .lime:hover{background:var(--ch)}
+body .lime:active{box-shadow:0 1px 0 rgba(0,0,0,.25);translate:0 3px}
+body .dark{background:var(--cc);color:var(--cr)}
+body .dark:hover{background:#3a3633}
+body .duo .dark,body nav .btn.dark{background:var(--bd);color:var(--cr)}
+body .duo .dark:hover,body nav .btn.dark:hover{background:var(--ch)}
+body .ghost{border-color:var(--line);color:var(--bd)}
+body .ghost:hover{background:var(--cr)}
+body .btn:disabled{opacity:.45}
+body .duo{border-color:var(--line);background:var(--paper)}
+
+/* headings */
+body #review h2{font:400 clamp(44px,6vw,84px)/1 var(--serif);letter-spacing:-.015em;margin-bottom:14px;color:var(--cc)}
+body #review>p{color:#5a4a44;font-weight:400}
+body .card h3{font:400 30px/1.1 var(--serif);letter-spacing:-.01em;color:var(--bd)}
+body .dl-copy h1{font:400 clamp(48px,6.4vw,92px)/.92 var(--serif);letter-spacing:-.02em;color:var(--cc)}
+body .dl-copy p{color:#5a4a44;font-weight:400}
+body .dl-back,body .dl-links a{color:var(--bd)}
+
+/* capture */
+body .stage{background:#241210;box-shadow:0 30px 50px -28px rgba(84,23,17,.55)}
+body #msg{background:var(--cr);color:var(--bd);font-weight:400}
+body .thumb,body .ph{border-color:var(--line);background:var(--paper)}
+body .tag{background:var(--bd);color:var(--cr)}
+body .seg{border-color:var(--line);background:var(--paper)}
+body .seg button{color:var(--bd);font-weight:500}
+body .seg button.on{background:var(--bd);color:var(--cr)}
+body .seg button:not(.on):hover{background:var(--cr)}
+body .round.dark{background:var(--cc)}
+
+/* review */
+body .rv-card .btn{background:var(--cr);color:var(--bd);border-color:rgba(84,23,17,.22)}
+body .rv-card .btn:hover{background:var(--bg2)}
+
+/* result */
+body .card{background:var(--paper);border-color:var(--line);box-shadow:0 18px 40px -30px rgba(84,23,17,.45)}
+body .preview{background:linear-gradient(160deg,var(--cr),#efe0c3)}
+body #liveState{background:var(--cr);color:var(--bd)}
+body #liveBtn.off #liveState{background:var(--paper);border-color:var(--line)}
+body .opt{background:var(--paper);border-color:var(--line);color:var(--bd);font-weight:500}
+body .opt.on{background:var(--bd);border-color:var(--bd);color:var(--cr)}
+body .opt:not(.on):hover{background:var(--cr)}
+body .dlrow{border-color:var(--line);background:var(--paper);color:var(--bd)}
+body .dlrow:hover{background:var(--cr)}
+body .dlrow em{background:var(--ro);color:var(--bd)}
+body .ic,body .dlic{background:var(--cr);color:var(--bd)}
+
+/* download page: cream printer, burgundy sign */
+body .printer{background:repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 2px,rgba(84,23,17,.02) 2px 3px),linear-gradient(180deg,#fffaf0 0%,#f1e4c8 40%,#dcc8a2 75%,#c4ab82 100%)}
+body .printer-label{color:var(--bd);font:italic 17px var(--serif);letter-spacing:0}
+body .printer[data-state="idle"] .printer-led{background:var(--ro)}
+body .printer-glow{background:#ffcf7a}
+body .sign{background:var(--bd);color:var(--cr)}
+body .sign b{color:var(--ro)}
+body #dlSkip{color:#7a655d}
+body #dlBadge i{background:var(--ch)}
+body .dl-zoom{background:rgba(245,235,215,.94)}
+body .dl-zoom button{background:var(--bd)}
+body .dl-toast{background:var(--cc);color:var(--cr)}
+@keyframes led-breathe{50%{box-shadow:0 0 8px 2px rgba(200,142,134,.9),0 0 0 3px rgba(0,0,0,.06)}}
+
+/* ===== v2: burgundy header on every page, wordmark-only logo ===== */
+body header{background:var(--bd);border-bottom:1px solid rgba(245,235,215,.12)}
+body .logo img{height:34px;width:auto}
+body .pill{border-color:rgba(245,235,215,.55);color:var(--cr)}
+body .pill i,body .pill i::after{background:var(--ro)}
+@media(max-width:1024px){body .logo img{height:28px}}
+body[data-page=home] header{background:transparent;border-bottom:0}
+
+/* ===== v2: CAPTURE = inside the booth ===== */
+body[data-page=capture]{color:var(--cr);background:radial-gradient(120% 90% at 78% 40%,var(--ch) 0,var(--bd) 55%,#3b0f0b 100%) fixed}
+body[data-page=capture]::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+body[data-page=capture] header{background:transparent;border-bottom:0}
+body[data-page=capture] footer{margin-top:0}
+body[data-page=capture] #capture{padding-top:clamp(36px,5vw,64px)}
+
+/* wooden booth window */
+.stage-frame{position:relative;padding:clamp(10px,1.4vw,18px);border-radius:16px;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 2px,rgba(255,255,255,.03) 2px 5px),linear-gradient(145deg,#9a6238,#6b3a22 55%,#4b2416);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -3px 6px rgba(0,0,0,.35),0 40px 70px -26px rgba(0,0,0,.75),0 0 0 1px #2a120a}
+.stage-frame::before{content:"snappie.";position:absolute;left:50%;top:0;transform:translate(-50%,-62%);padding:6px 26px 8px;border-radius:8px;background:var(--cr);color:var(--bd);
+  font:800 clamp(16px,1.8vw,24px)/1 Manrope,sans-serif;letter-spacing:-.04em;box-shadow:0 8px 16px -8px rgba(0,0,0,.6),inset 0 0 0 2px rgba(84,23,17,.25)}
+body[data-page=capture] .stage{border-radius:6px;clip-path:inset(0 round 6px);background:#1b0b08;box-shadow:inset 0 0 0 1px rgba(0,0,0,.4)}
+.booth-fx{position:absolute;inset:0;pointer-events:none}
+.booth-fx .rod{position:absolute;left:0;right:0;top:0;height:9px;background:linear-gradient(180deg,#f3d78e,#b58a3c 60%,#7a5a22);box-shadow:0 4px 8px rgba(0,0,0,.45);z-index:3}
+.booth-fx .drape{position:absolute;top:0;bottom:0;width:11%;z-index:2;box-shadow:0 0 30px rgba(0,0,0,.55);
+  background:repeating-linear-gradient(90deg,#76241e 0 10px,#541711 10px 22px,#8a2f27 22px 30px,#541711 30px 42px)}
+.booth-fx .drape.l{left:0;border-radius:0 0 60% 0/0 0 14% 0}
+.booth-fx .drape.r{right:0;border-radius:0 0 0 60%/0 0 0 14%}
+.booth-fx .glow{position:absolute;inset:0;background:radial-gradient(70% 45% at 50% 0,rgba(255,196,120,.38),transparent 70%);mix-blend-mode:soft-light}
+.booth-fx .vig{position:absolute;inset:0;box-shadow:inset 0 0 90px 12px rgba(30,8,4,.55)}
+body[data-page=capture] #count{font:italic 400 min(30vw,300px) "Instrument Serif",Georgia,serif;color:var(--cr);text-shadow:0 0 60px rgba(255,196,120,.7),0 6px 40px rgba(0,0,0,.5)}
+body[data-page=capture] #msg{background:#2a0f0b;color:var(--cr)}
+
+/* output strip being printed */
+body[data-page=capture] .thumbs{position:relative;background:var(--paper);padding:14px 12px 34px;gap:10px;border-radius:3px;box-shadow:0 24px 40px -16px rgba(0,0,0,.7);transform:rotate(1.4deg)}
+body[data-page=capture] .thumbs::after{content:"snappie.";position:absolute;left:0;right:0;bottom:9px;text-align:center;font:800 14px Manrope,sans-serif;letter-spacing:-.04em;color:var(--bd)}
+body[data-page=capture] .thumb{border:0;border-radius:2px;clip-path:inset(0 round 2px);background:#eadcc0}
+body[data-page=capture] .tag{height:22px;padding:0 10px;font-size:12px;left:6px;bottom:6px}
+@media(max-width:1024px){body[data-page=capture] .thumbs{transform:none;padding:10px 10px 30px}}
+
+/* controls on burgundy */
+body[data-page=capture] #shoot{background:var(--cr);color:var(--bd);box-shadow:0 5px 0 rgba(0,0,0,.35)}
+body[data-page=capture] #shoot:hover{background:#fff}
+body[data-page=capture] #shoot:active{box-shadow:0 1px 0 rgba(0,0,0,.35)}
+body[data-page=capture] #resetCap{background:rgba(245,235,215,.12);border-color:rgba(245,235,215,.45);color:var(--cr)}
+body[data-page=capture] #resetCap:hover{background:rgba(245,235,215,.22)}
+body[data-page=capture] .seg{background:rgba(245,235,215,.08);border-color:rgba(245,235,215,.35);color:var(--cr)}
+body[data-page=capture] .seg button{color:var(--cr)}
+body[data-page=capture] .seg button.on{background:var(--cr);color:var(--bd)}
+body[data-page=capture] .seg button:not(.on):hover{background:rgba(245,235,215,.16)}
+body[data-page=capture] .btn:focus-visible,body[data-page=capture] .seg button:focus-visible{outline-color:var(--ro)}
+@media(prefers-reduced-motion:reduce){body[data-page=capture] .thumbs{transform:none}}
+
+/* ===== v3: 3D curtain layer + shared dark "inside the booth" pages ===== */
+.booth-fx .c3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2}
+.stage.has3d .booth-fx .drape{display:none}
+body[data-page=capture] #count,body[data-page=capture] #flash,body[data-page=capture] #msg{z-index:4}
+
+body[data-page=capture],body[data-page=review],body[data-page=result]{color:var(--cr);background:radial-gradient(120% 90% at 78% 40%,var(--ch) 0,var(--bd) 55%,#3b0f0b 100%) fixed}
+body[data-page=review]::before,body[data-page=result]::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+body[data-page=review] header,body[data-page=result] header{background:transparent;border-bottom:0}
+body[data-page=review] footer,body[data-page=result] footer{margin-top:0}
+
+/* progress ribbon (visual only; follows body[data-page]) */
+.progress{display:none;align-items:center;justify-content:center;gap:12px;margin:0 var(--m);padding-top:6px;font:500 12px Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,235,215,.4)}
+.progress span{display:flex;align-items:center;gap:8px}
+.progress span::before{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor}
+.progress i{width:clamp(16px,5vw,56px);height:1px;background:currentColor;opacity:.5}
+body[data-page=capture] .progress,body[data-page=review] .progress,body[data-page=result] .progress,body[data-page=download] .progress{display:flex}
+body[data-page=capture] .progress [data-p=capture],body[data-page=review] .progress [data-p=review],body[data-page=result] .progress [data-p=result],body[data-page=download] .progress [data-p=download]{color:var(--cr)}
+body[data-page=capture] .progress [data-p=capture]::before,body[data-page=review] .progress [data-p=review]::before,body[data-page=result] .progress [data-p=result]::before,body[data-page=download] .progress [data-p=download]::before{background:currentColor;box-shadow:0 0 10px 2px rgba(255,196,120,.6)}
+body[data-page=review] .progress [data-p=capture],body[data-page=result] .progress [data-p=capture],body[data-page=result] .progress [data-p=review],body[data-page=download] .progress [data-p=capture],body[data-page=download] .progress [data-p=review],body[data-page=download] .progress [data-p=result]{color:rgba(245,235,215,.75)}
+body[data-page=review] .progress [data-p=capture]::before,body[data-page=result] .progress [data-p=capture]::before,body[data-page=result] .progress [data-p=review]::before,body[data-page=download] .progress [data-p=capture]::before,body[data-page=download] .progress [data-p=review]::before,body[data-page=download] .progress [data-p=result]::before{background:currentColor;opacity:.7}
+body[data-page=download] .progress{color:rgba(84,23,17,.4)}
+body[data-page=download] .progress [data-p=download]{color:var(--bd)}
+body[data-page=download] .progress [data-p=capture],body[data-page=download] .progress [data-p=review],body[data-page=download] .progress [data-p=result]{color:rgba(84,23,17,.65)}
+body[data-page=download] .progress [data-p=download]::before{box-shadow:none}
+
+/* ---- REVIEW: prints pinned on the wall ---- */
+body[data-page=review] #review{padding-top:clamp(28px,4vw,56px)}
+body[data-page=review] #review h2{color:var(--cr)}
+body[data-page=review] #review>p{color:rgba(245,235,215,.8)}
+body[data-page=review] .rv-grid{gap:clamp(24px,3vw,44px) clamp(24px,5vw,72px);margin:44px auto 64px}
+body[data-page=review] .rv-card{background:var(--paper);padding:clamp(10px,1.3vw,16px);border-radius:4px;box-shadow:0 34px 50px -24px rgba(0,0,0,.75);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+body[data-page=review] .rv-card:nth-child(odd){transform:rotate(-1.2deg)}
+body[data-page=review] .rv-card:nth-child(even){transform:rotate(1.2deg)}
+@media(hover:hover){body[data-page=review] .rv-card:hover{transform:rotate(0) translateY(-8px)}}
+body[data-page=review] .ph{border:0;border-radius:2px;clip-path:inset(0 round 2px);background:#eadcc0}
+body[data-page=review] .rv-card .btn{width:100%;height:52px;margin-top:12px;font-size:16px;background:transparent;color:var(--bd);border-color:rgba(84,23,17,.35)}
+body[data-page=review] .rv-card .btn:hover{background:var(--cr);border-color:var(--bd)}
+body[data-page=review] .tag{height:24px;padding:0 12px;font-size:12px}
+body[data-page=review] .duo,body[data-page=result] .duo{background:rgba(245,235,215,.08);border-color:rgba(245,235,215,.3)}
+body[data-page=review] .duo .ghost,body[data-page=result] .duo .ghost{color:var(--cr)}
+body[data-page=review] .duo .ghost:hover,body[data-page=result] .duo .ghost:hover{background:rgba(245,235,215,.14)}
+body[data-page=review] .duo .dark,body[data-page=result] .duo .dark{background:var(--cr);color:var(--bd)}
+body[data-page=review] .duo .dark:hover,body[data-page=result] .duo .dark:hover{background:#fff}
+
+/* ---- RESULT: strip under the booth light ---- */
+body[data-page=result] .res-grid{padding-top:clamp(24px,3vw,44px)}
+body[data-page=result] .card{background:rgba(245,235,215,.06);border-color:rgba(245,235,215,.2);box-shadow:none;color:var(--cr)}
+body[data-page=result] .card h3{color:var(--cr)}
+body[data-page=result] .preview{background:radial-gradient(60% 55% at 50% 38%,rgba(255,196,120,.3),transparent 72%),rgba(20,5,3,.35)}
+body[data-page=result] #strip{box-shadow:0 2px 3px rgba(0,0,0,.3),0 36px 50px -18px rgba(0,0,0,.75)}
+body[data-page=result] .opt{background:rgba(245,235,215,.07);border-color:rgba(245,235,215,.22);color:var(--cr)}
+body[data-page=result] .opt:not(.on):hover{background:rgba(245,235,215,.16)}
+body[data-page=result] .opt.on{background:var(--cr);border-color:var(--cr);color:var(--bd)}
+body[data-page=result] #liveState{background:rgba(245,235,215,.18);color:var(--cr)}
+body[data-page=result] #liveBtn.off #liveState{background:transparent;border-color:rgba(245,235,215,.35)}
+body[data-page=result] .lime{background:var(--cr);color:var(--bd)}
+body[data-page=result] .lime:hover{background:#fff}
+@media(min-width:1025px){body[data-page=result] .res-grid .left{position:sticky;top:16px;align-self:start}}
+@media(prefers-reduced-motion:reduce){body[data-page=review] .rv-card{transform:none!important}}
+
+/* ===== v4: fix Live Photo / Retake bars on dark pages ===== */
+body[data-page=review] .duo .ghost,body[data-page=result] .duo .ghost{background:transparent;color:var(--cr)}
+body[data-page=result] #liveBtn{color:var(--cr)}
+body[data-page=result] #liveState{background:rgba(245,235,215,.2);color:var(--cr)}
+body[data-page=result] #liveBtn.off{color:rgba(245,235,215,.75)}
+
+/* ===== v4: DOWNLOAD — printer reveal in the booth, centered ===== */
+body[data-page=download]{color:var(--cr);background:radial-gradient(120% 90% at 78% 40%,var(--ch) 0,var(--bd) 55%,#3b0f0b 100%) fixed}
+body[data-page=download]::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+body[data-page=download] header{background:transparent;border-bottom:0}
+body[data-page=download] footer{margin-top:0}
+body[data-page=download] .progress{color:rgba(245,235,215,.4)}
+body[data-page=download] .progress [data-p=download]{color:var(--cr)}
+body[data-page=download] .progress [data-p=capture],body[data-page=download] .progress [data-p=review],body[data-page=download] .progress [data-p=result]{color:rgba(245,235,215,.75)}
+body[data-page=download] .progress [data-p=download]::before{box-shadow:0 0 10px 2px rgba(255,196,120,.6)}
+
+/* layout: badge / headline / subline on top, printout in the middle, actions below */
+body[data-page=download] .dl-wrap{padding-top:clamp(12px,2vw,24px)}
+body[data-page=download] .dl-back,body[data-page=download] .dl-links a{color:var(--cr);opacity:.85}
+body[data-page=download] .dl-back:hover,body[data-page=download] .dl-links a:hover{opacity:1}
+body[data-page=download] .dl-grid{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
+body[data-page=download] .dl-copy{display:contents}
+body[data-page=download] #dlBadge{order:1;margin:0 0 16px}
+body[data-page=download] .dl-copy h1{order:2;color:var(--cr);font-size:clamp(46px,7vw,100px);text-align:center}
+body[data-page=download] .dl-copy p{order:3;margin:18px auto 0;max-width:46ch;color:rgba(245,235,215,.82);text-align:center}
+body[data-page=download] .dl-stage{order:4;margin-top:clamp(36px,5vw,64px)}
+body[data-page=download] .dl-actions{order:5;align-items:center;margin-top:clamp(26px,3vw,40px)}
+body[data-page=download] .dl-links{justify-content:center}
+body[data-page=download] #dlSkip{align-self:center;color:rgba(245,235,215,.7)}
+body[data-page=download] .rise{background:none;border:0;color:var(--cr);font:400 14px Manrope,sans-serif;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:6px 8px;opacity:.85}
+body[data-page=download] #dlZoomLink{margin-top:16px}
+body[data-page=download] .rise:hover{opacity:1}
+
+/* badge + controls on burgundy */
+body[data-page=download] #dlBadge{background:rgba(245,235,215,.08);border-color:rgba(245,235,215,.4);color:var(--cr)}
+body[data-page=download] .lime{background:var(--cr);color:var(--bd)}
+body[data-page=download] .lime:hover{background:#fff}
+body[data-page=download] #saveVid{background:rgba(245,235,215,.1);border-color:rgba(245,235,215,.4);color:var(--cr)}
+body[data-page=download] #saveVid:hover{background:rgba(245,235,215,.2)}
+body[data-page=download] #dlShare{background:transparent;border-color:rgba(245,235,215,.4);color:var(--cr)}
+body[data-page=download] #dlShare:hover{background:rgba(245,235,215,.14)}
+body[data-page=download] .btn:focus-visible{outline-color:var(--ro)}
+
+/* printer: scales with the strip (so 2x2 / square prints are not tiny), warm light, cream sign */
+body .printer{--pw:min(max(380px,calc(var(--strip-w) + 120px)),94vw)}
+body[data-page=download] .dl-stage::before{content:"";position:absolute;inset:-6% -40% -4%;background:radial-gradient(closest-side,rgba(255,196,120,.26),transparent);pointer-events:none;z-index:0}
+body[data-page=download] .sign{background:var(--cr);color:var(--bd)}
+body[data-page=download] .sign b{color:var(--ch)}
+body[data-page=download] .sign::before,body[data-page=download] .sign::after{background:#d9b36a}
+body[data-page=download] .strip{border-radius:2px}
+body[data-page=download] .dl-zoom{background:rgba(37,12,9,.9)}
+body[data-page=download] .dl-zoom img{box-shadow:0 30px 60px -20px #000}
+body[data-page=download] .dl-zoom button{background:var(--cr);color:var(--bd)}
+
+/* download: printer badge uses the real snappie. wordmark (burgundy version, same logo as the header) */
+body .printer-label{left:8%;top:13%;line-height:0}
+body .printer-label img{display:block;height:24px;width:auto}
+
+/* footer brand: real wordmark (cream version, footer is charcoal) */
+.ft-brand{line-height:0}
+.ft-brand img{display:block;height:36px;width:auto}
+@media(max-width:1024px){.ft-brand img{height:30px}}

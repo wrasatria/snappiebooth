@@ -1,0 +1,26 @@
+/* Admin re-skin to match the Snappie theme. Visual only; load after admin.css. */
+:root{--bd:#541711;--ch:#76241E;--cr:#F5EBD7;--iv:#FFF9EF;--cc:#252321;--ro:#C88E86;--bg2:#D8C5A6;--serif:"Instrument Serif",Georgia,serif;--line:rgba(84,23,17,.2)}
+body{background:var(--iv);color:var(--cc)}
+header{background:var(--iv);border-bottom-color:var(--line)}
+.logo{font:italic 400 34px var(--serif);color:var(--bd)}
+.logo b{background:var(--bd);color:var(--cr);font:500 12px Manrope;letter-spacing:.08em;text-transform:uppercase}
+h2,h3{font-family:var(--serif);font-weight:400;color:var(--bd);letter-spacing:-.01em}
+h2{font-size:40px;line-height:1}h3{font-size:30px}
+label{color:#5a4a44}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=file],input[type=color],select#fLayout{background:#fffdf8;border-color:var(--line)}
+input:focus-visible,select:focus-visible{outline:2px solid var(--ch);outline-offset:1px}
+button{border-color:var(--bd);color:var(--bd);background:#fffdf8;transition:background .2s,transform .15s}
+button:hover{background:var(--cr)}button:active{transform:scale(.97)}
+button:focus-visible{outline:3px solid var(--ch);outline-offset:2px}
+button.dark,button.lime{background:var(--bd);border-color:var(--bd);color:var(--cr)}
+button.dark:hover,button.lime:hover{background:var(--ch)}
+#login form,#editor,.row-item{background:#fffdf8;border-color:var(--line)}
+#slotArea{background:var(--cr)}
+.err{color:var(--ch)}
+
+/* header matches the site: burgundy with cream wordmark */
+header{background:var(--bd);border-bottom:0}
+.logo{color:var(--cr)}
+.logo b{background:var(--cr);color:var(--bd)}
+header button{background:transparent;color:var(--cr);border-color:rgba(245,235,215,.55)}
+header button:hover{background:rgba(245,235,215,.14)}

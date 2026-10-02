@@ -90,6 +90,8 @@ function grade(w, h, f) {
   tx.putImageData(d, 0, 0);
 }
 function drawStrip(srcs) {
+  if (!S.tpl) S.tpl = TEMPLATES[0];   // template datang async dari Supabase; pakai yang pertama jika belum dipilih
+  if (!S.tpl) return;                 // belum ada template sama sekali: jangan error, tunggu refreshTplOpts
   const t = S.tpl, f = FILTERS[S.filter];
   if (cv.width !== t.w || cv.height !== t.h) { cv.width = t.w; cv.height = t.h; }
   cx.fillStyle = t.bg; cx.fillRect(0, 0, t.w, t.h);
@@ -114,7 +116,7 @@ function renderTplOpts() {
   $("#tplOpts").innerHTML = TEMPLATES.map(t => `<button class="opt${t === S.tpl ? " on" : ""}" data-t="${t.id}">${t.name}</button>`).join("");
   $("#tplCount").textContent = TEMPLATES.length;
 }
-window.refreshTplOpts = () => { if (!$("#result").hidden) renderTplOpts(); };
+window.refreshTplOpts = () => { if (!$("#result").hidden) { renderTplOpts(); render(); } };
 function startResult() {
   vids = S.clips.map((u, i) => { if (!u) return S.photos[i]; const v = document.createElement("video"); Object.assign(v, { src: u, muted: true, loop: true, playsInline: true }); return v; });
   renderTplOpts();

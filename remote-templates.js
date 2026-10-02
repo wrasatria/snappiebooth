@@ -14,6 +14,9 @@
       if (TEMPLATES.some(t => t.id === r.id)) return; // sudah ada, jangan dobel
       TEMPLATES.push({ id: r.id, name: r.name, w: r.w, h: r.h, bg: r.bg, ink: r.ink, ty: r.ty, fs: r.fs, frame: r.frame_path || undefined, slots: r.slots });
     });
+    /* S.tpl di app.js diisi saat script dimuat, ketika TEMPLATES masih kosong.
+       Begitu template tiba dari Supabase, isi template default-nya di sini. */
+    if (typeof S !== "undefined" && !S.tpl && TEMPLATES.length) S.tpl = TEMPLATES[0];
     const c = document.getElementById("tplCount");
     if (c) c.textContent = TEMPLATES.length;
     if (typeof window.refreshTplOpts === "function") window.refreshTplOpts();

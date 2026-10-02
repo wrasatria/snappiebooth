@@ -4,26 +4,162 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>snappie.</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="theme.css">
 </head>
 <body data-page="home">
 <header>
-  <a class="logo" href="#" data-go="home"><img src="assets/logo.svg" alt="snappie." height="60"></a>
-  <nav class="only-home"><a href="#">About</a><a href="#">How it works?</a><button class="btn dark" data-start>Start snapping!</button></nav>
+  <a class="logo" href="#" data-go="home"><img src="assets/logo-wordmark.svg" alt="snappie." height="40"></a>
+  <nav class="only-home"><a href="#hm-exp">The booth</a><a href="#hm-how">How it works</a><a href="#hm-strips">Strips</a><button class="btn dark" data-start>Start snapping!</button></nav>
   <span class="pill only-capture"><i></i>Studio Live</span>
 </header>
 
 <main>
+<div class="progress" aria-hidden="true"><span data-p="capture">Snap</span><i></i><span data-p="review">Review</span><i></i><span data-p="result">Style</span><i></i><span data-p="download">Download</span></div>
 <section id="home">
-  <h1>This deserve<br>a spot on your feed.</h1>
-  <p>Satu sesi foto, banyak gaya. Pilih frame favoritmu, abadikan momen, dan download hasilnya. Easy, right?</p>
-  <button class="btn lime big" data-start><span aria-hidden="true">▶</span>Let's snap!</button>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="booth-line" viewBox="0 0 200 280" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="44" y="6" width="112" height="22" rx="5"/><path d="M100 11l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z"/>
+    <rect x="22" y="34" width="156" height="236" rx="10"/>
+    <rect x="58" y="58" width="84" height="150"/><path d="M52 58h96"/>
+    <path d="M58 58h20c-4 40 4 96-4 150H58z"/><path d="M142 58h-20c4 40-4 96 4 150h16z"/>
+    <ellipse cx="100" cy="172" rx="20" ry="6"/><path d="M100 178v24M88 202h24"/>
+    <rect x="70" y="228" width="60" height="8" rx="4"/><path d="M76 252h48" stroke-dasharray="2 6"/>
+  </symbol>
+</defs></svg>
+
+<!-- HERO -->
+<div class="hm-hero">
+  <span class="hm-grain" aria-hidden="true"></span>
+  <div class="hm-hero-in">
+    <div class="hm-copy">
+      <p class="hm-kicker">Snappie Booth · online photobooth</p>
+      <h1 class="hm-h1">A little booth,<br><em>a lot of</em> memories.</h1>
+      <p class="hm-lead">Gather your favorite people, strike a pose, and turn spontaneous moments into photo strips worth keeping. No studio needed, just a little fun and a camera.</p>
+      <div class="hm-ctas">
+        <button class="btn hm-cta cream" data-start><span aria-hidden="true">▶</span>Let's Snap!</button>
+        <a class="hm-ghost" href="#hm-exp">Explore the Booth</a>
+      </div>
+    </div>
+    <div class="hm-booth-wrap">
+      <i class="hm-fs f1" aria-hidden="true"><b></b><b></b><b></b><b></b></i>
+      <i class="hm-fs f2" aria-hidden="true"><b></b><b></b><b></b><b></b></i>
+      <i class="hm-fs f3" aria-hidden="true"><b></b><b></b><b></b><b></b></i>
+      <svg class="hm-spark s1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z"/></svg>
+      <svg class="hm-spark s2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z"/></svg>
+      <svg class="hm-booth" viewBox="0 0 360 470" role="img" aria-label="Illustration of a photobooth with burgundy curtains opening">
+        <defs>
+          <linearGradient id="hmGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd8a0"/><stop offset=".6" stop-color="#e9954f"/><stop offset="1" stop-color="#a8512a"/></linearGradient>
+          <linearGradient id="hmCurt" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#76241E"/><stop offset=".25" stop-color="#541711"/><stop offset=".5" stop-color="#8a2f27"/><stop offset=".75" stop-color="#541711"/><stop offset="1" stop-color="#76241E"/></linearGradient>
+        </defs>
+        <ellipse cx="180" cy="458" rx="150" ry="9" fill="#000" opacity=".28"/>
+        <rect x="30" y="40" width="300" height="415" rx="16" fill="#2c0e0a"/>
+        <rect x="38" y="48" width="284" height="399" rx="12" fill="none" stroke="#a9744c" stroke-width="3"/>
+        <rect x="62" y="10" width="236" height="46" rx="10" fill="#F5EBD7"/>
+        <text x="180" y="42" text-anchor="middle" font-family="Instrument Serif,Georgia,serif" font-style="italic" font-size="30" fill="#541711">photos</text>
+        <g fill="#ffcf7a"><circle class="hm-bulb" cx="76" cy="33" r="3.5"/><circle class="hm-bulb b2" cx="284" cy="33" r="3.5"/></g>
+        <rect x="62" y="74" width="236" height="332" rx="6" fill="url(#hmGlow)"/>
+        <circle class="hm-lamp" cx="180" cy="96" r="12" fill="#fff6da"/>
+        <ellipse cx="180" cy="326" rx="44" ry="11" fill="#541711"/><rect x="176" y="337" width="8" height="52" fill="#3a1410"/><rect x="152" y="387" width="56" height="7" rx="3" fill="#3a1410"/>
+        <g fill="#3f5a3a"><path d="M86 400c-14-30-6-62 10-84 4 34 8 56-10 84z"/><path d="M96 400c10-28 28-44 46-50-6 28-20 44-46 50z"/></g>
+        <g class="hm-cl"><g class="hm-sw"><rect x="62" y="74" width="118" height="332" fill="url(#hmCurt)"/><g stroke="#2c0e0a" stroke-opacity=".35" stroke-width="2"><path d="M90 74v332M118 74v332M146 74v332"/></g></g></g>
+        <g class="hm-cr"><g class="hm-sw s2"><rect x="180" y="74" width="118" height="332" fill="url(#hmCurt)"/><g stroke="#2c0e0a" stroke-opacity=".35" stroke-width="2"><path d="M208 74v332M236 74v332M264 74v332"/></g></g></g>
+        <rect x="52" y="68" width="256" height="8" rx="4" fill="#d9b36a"/>
+        <rect x="108" y="416" width="144" height="12" rx="6" fill="#0d0504"/>
+        <rect x="62" y="438" width="236" height="3" fill="#a9744c" opacity=".6"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- A: EXPERIENCE -->
+<div class="hm-sec iv" id="hm-exp">
+  <div class="hm-wrap hm-two">
+    <div class="hm-text rv">
+      <h2 class="hm-h2">Your own little <em>photo studio.</em></h2>
+      <p>From spontaneous selfies to unforgettable group shots, every session turns simple moments into something worth remembering.</p>
+      <ul class="hm-facts">
+        <li>Four photos, one countdown</li>
+        <li>Pick a strip layout that suits the mood</li>
+        <li>Add a film-style filter, then download</li>
+      </ul>
+    </div>
+    <div class="hm-compose rv" aria-hidden="true">
+      <svg class="hm-line-booth"><use href="#booth-line"/></svg>
+      <div class="hm-mini"><b></b><b></b><b></b><b></b><span>snappie.</span></div>
+      <span class="hm-tag t1">4 frames, 1 take</span>
+      <span class="hm-tag t2">Fresh off the printer</span>
+    </div>
+  </div>
+</div>
+
+<!-- B: HOW IT WORKS -->
+<div class="hm-sec cr" id="hm-how">
+  <div class="hm-wrap">
+    <h2 class="hm-h2 rv">Three steps to a <em>keepsake.</em></h2>
+    <ol class="hm-steps">
+      <li class="rv"><span class="n">01</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="5" width="30" height="38" rx="3"/><path d="M9 12c6 10 6 20 0 31M39 12c-6 10-6 20 0 31"/></svg>
+        <h3>Step inside</h3><p>Get ready, gather your friends, and enter your own virtual photobooth.</p></li>
+      <li class="rv"><span class="n">02</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="14" width="38" height="25" rx="5"/><circle cx="24" cy="26" r="7"/><path d="M16 14l3-5h10l3 5"/></svg>
+        <h3>Strike a pose</h3><p>Capture your favorite expressions, experiment with poses, and have fun with every shot.</p></li>
+      <li class="rv"><span class="n">03</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="4" width="18" height="40" rx="2"/><path d="M19 12h10M19 20h10M19 28h10"/></svg>
+        <h3>Keep the memories</h3><p>Choose your favorite photo strip, customize the look, and download your memories to keep or share.</p></li>
+    </ol>
+  </div>
+</div>
+
+<!-- C: GALLERY (rendered from the real TEMPLATES by home.js) -->
+<div class="hm-sec iv" id="hm-strips">
+  <div class="hm-wrap">
+    <div class="hm-head rv">
+      <h2 class="hm-h2">Little strips, <em>big memories.</em></h2>
+      <p>Every frame tells a story. Find a style that feels like you.</p>
+    </div>
+    <div class="hm-gallery" id="hmGallery"><p class="hm-empty" id="hmGalleryMsg">Setting out the strips…</p></div>
+    <p class="hm-hint rv">Tap a strip to start snapping with that layout.</p>
+  </div>
+</div>
+
+<!-- D: PHYSICAL FEEL -->
+<div class="hm-sec dark" id="hm-feel">
+  <span class="hm-grain" aria-hidden="true"></span>
+  <div class="hm-wrap hm-two rev">
+    <div class="hm-curtain-scene rv" aria-hidden="true">
+      <div class="hm-drape l"></div><div class="hm-drape r"></div>
+      <div class="hm-lights"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="hm-clip c1"><i class="hm-fs"><b></b><b></b><b></b><b></b></i></div>
+      <div class="hm-clip c2"><i class="hm-fs"><b></b><b></b><b></b><b></b></i></div>
+      <div class="hm-clip c3"><i class="hm-fs"><b></b><b></b><b></b><b></b></i></div>
+      <div class="hm-shelf"></div>
+    </div>
+    <div class="hm-text rv">
+      <h2 class="hm-h2">That classic <em>photo booth</em> feeling.</h2>
+      <p>Warm lights, playful poses, and those little photo strips you'll want to keep forever. Bring the charm of a classic photo booth into your browser.</p>
+    </div>
+  </div>
+</div>
+
+<!-- E: FINAL CTA -->
+<div class="hm-sec burg" id="hm-final">
+  <span class="hm-grain" aria-hidden="true"></span>
+  <svg class="hm-bg-booth" aria-hidden="true"><use href="#booth-line"/></svg>
+  <div class="hm-wrap center rv">
+    <h2 class="hm-h2">Ready to make a <em>little magic?</em></h2>
+    <p>Your next favorite memory is just a few clicks away.</p>
+    <button class="btn hm-cta cream" data-start>Start Snapping</button>
+  </div>
+</div>
+<div class="hm-flash" id="hmFlash" aria-hidden="true"></div>
 </section>
 
 <section id="capture" hidden>
   <div class="cap-grid">
-    <div class="stage"><video id="cam" autoplay playsinline muted></video><div id="count"></div><div id="flash"></div><div id="msg" hidden></div></div>
+    <div class="stage-frame"><div class="stage"><video id="cam" autoplay playsinline muted></video><div class="booth-fx" aria-hidden="true"><i class="rod"></i><i class="drape l"></i><i class="drape r"></i><i class="glow"></i><i class="vig"></i></div><div id="count"></div><div id="flash"></div><div id="msg" hidden></div></div></div>
     <div class="thumbs" id="thumbs"></div>
   </div>
   <div class="row"><button class="btn lime" id="shoot">Manual Capture Image</button><button class="btn dark round" id="resetCap" aria-label="Retake all"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg></button>
@@ -63,7 +199,7 @@
       <div class="dl-stage" style="--strip-w:clamp(140px,21vh,200px)">
         <div class="sign" id="dlSign" aria-hidden="true">Your memories are printing...</div>
         <div class="printer" id="dlPrinter" data-state="preparing">
-          <span class="printer-label">snappie.</span>
+          <span class="printer-label"><img src="assets/logo-wordmark-burgundy.svg" alt="snappie."></span>
           <span class="printer-led"></span>
           <span class="printer-glow"></span>
           <span class="printer-slot"></span>
@@ -103,11 +239,15 @@
 <div id="dlZoomOverlay" class="dl-zoom" hidden><img id="dlZoomImg" alt="Strip foto diperbesar"><button type="button" id="dlZoomClose" aria-label="Tutup">×</button></div>
 <div id="dlToast" class="dl-toast" hidden></div>
 
-<footer><span><b>© 2026 Snappie.</b> All right reserved.</span><b>Made for your best moment</b></footer>
+<footer><span class="ft-brand only-home"><img src="assets/logo-wordmark.svg" alt="snappie." height="36"></span><span><b>© 2026 Snappie.</b> All right reserved.</span><span class="ft-links only-home"><a href="#hm-how">How it works</a><a href="#hm-strips">Strips</a><a href="#" data-start>Start snapping</a></span><b>Made for your best moments.</b></footer>
 <script src="templates.js"></script>
 <script src="config.js"></script>
 <script src="remote-templates.js"></script>
 <script src="app.js"></script>
+<script src="home.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="booth3d.js" defer></script>
+<script src="curtain3d.js" defer></script>
 <script>$("#tplCount").textContent=TEMPLATES.length;$("#fltCount").textContent=Object.keys(FILTERS).length;</script>
 </body>
 </html>
