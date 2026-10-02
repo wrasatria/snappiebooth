@@ -207,5 +207,12 @@ body[data-page=home] nav .btn.dark:hover{background:#fff}
 .hm-booth{position:absolute;inset:0;width:100%;height:100%}
 .hm-booth3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
 .hm-booth-wrap.is3d .hm-booth{display:none}
+/* Jangan tampilkan ilustrasi SVG lama saat refresh: sembunyikan sampai 3D siap (is3d) atau terbukti gagal (no3d).
+   Ukuran wrap tetap (aspect-ratio), jadi tidak ada layout shift. */
+.hm-booth-wrap:not(.is3d):not(.no3d) .hm-booth{opacity:0}
+.hm-booth-wrap.no3d .hm-booth{animation:hmFade .4s ease both}
+.hm-booth3d{animation:hmFade .5s ease both}
+@keyframes hmFade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.hm-booth3d,.hm-booth-wrap.no3d .hm-booth{animation:none}}
 .hm-booth-wrap .hm-fs,.hm-booth-wrap .hm-spark{z-index:2}
 .hm-fs.f1{left:-16%}.hm-fs.f3{left:-10%}.hm-fs.f2{right:-12%}

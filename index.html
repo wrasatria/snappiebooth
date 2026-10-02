@@ -247,6 +247,8 @@
 <script src="home.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <script src="booth3d.js" defer></script>
+<script>/* jaring pengaman: kalau 3D belum siap setelah 8 detik (CDN sangat lambat), tampilkan ilustrasi SVG */
+setTimeout(function(){var w=document.querySelector(".hm-booth-wrap");if(w&&!w.classList.contains("is3d"))w.classList.add("no3d")},8000);</script>
 <script src="curtain3d.js" defer></script>
 <script>$("#tplCount").textContent=TEMPLATES.length;$("#fltCount").textContent=Object.keys(FILTERS).length;</script>
 </body>

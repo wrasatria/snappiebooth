@@ -2,14 +2,15 @@
    if WebGL / three.js is unavailable. Needs three.js r128 loaded first. */
 (function () {
   const wrap = document.querySelector(".hm-booth-wrap");
-  if (!wrap || !window.THREE) return;
+  if (!wrap) return;
+  if (!window.THREE) { wrap.classList.add("no3d"); return; }   // three.js gagal dimuat: tampilkan ilustrasi SVG
   const T = THREE;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let renderer;
   try {
     renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-  } catch (e) { return; }
+  } catch (e) { wrap.classList.add("no3d"); return; }   // WebGL tidak tersedia: tampilkan ilustrasi SVG
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
