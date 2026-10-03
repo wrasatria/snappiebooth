@@ -262,3 +262,93 @@ body .printer-label img{display:block;height:24px;width:auto}
 .ft-brand{line-height:0}
 .ft-brand img{display:block;height:36px;width:auto}
 @media(max-width:1024px){.ft-brand img{height:30px}}
+
+/* =====================================================================
+   v6: RESPONSIVE (iPad / phone portrait). Appended last; remove this block to go back to v5.
+   ===================================================================== */
+
+/* 1) Background gelap di capture/review/result/download: jangan pakai `background-attachment: fixed`.
+      iOS Safari (iPhone & iPad) tidak mendukungnya dengan benar, sehingga latar bisa putus dan teks cream
+      jadi tidak terbaca. Gradient dipindah ke layer position:fixed (didukung semua browser). */
+html{-webkit-text-size-adjust:100%}
+body{min-height:100vh;min-height:100dvh}
+body[data-page=capture],body[data-page=review],body[data-page=result],body[data-page=download]{background:var(--bd)}
+body[data-page=capture]::after,body[data-page=review]::after,body[data-page=result]::after,body[data-page=download]::after{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(120% 90% at 78% 40%,var(--ch) 0,var(--bd) 55%,#3b0f0b 100%)}
+
+/* 2) Halaman download: cahaya di belakang printer melebar keluar layar HP dan membuat halaman bisa digeser ke samping */
+#download{overflow-x:hidden;overflow-x:clip}
+
+/* 3) Stepper di layar sangat sempit (iPhone SE / 360px) */
+@media(max-width:380px){
+  .progress{gap:8px;letter-spacing:.06em;font-size:11px;margin:0 12px}
+  .progress span{gap:6px}.progress i{width:12px}
+}
+
+/* 4) iPad portrait & tablet kecil (768 - 1024px) */
+@media(min-width:768px) and (max-width:1024px){
+  [data-page=home] nav{gap:22px;font-size:12px}
+  [data-page=home] nav a{display:inline-block}
+  #home .hm-two{grid-template-columns:1fr 1fr}
+  #home .hm-two.rev{grid-template-columns:1.1fr .9fr}
+  #home .hm-two.rev .hm-curtain-scene{order:0}
+  .hm-compose{min-height:400px}
+  .hm-line-booth{width:min(220px,62%);justify-self:start;margin-left:4%}
+}
+@media(min-width:701px) and (max-width:1024px){
+  /* hero: dua kolom supaya booth langsung terlihat tanpa scroll dan tidak ada ruang kosong di kanan */
+  #home .hm-hero-in{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:center;padding-bottom:56px}
+  #home .hm-h1{font-size:clamp(48px,7.2vw,80px)}
+  #home .hm-lead{font-size:17px;max-width:34ch;margin-top:22px}
+  #home .hm-ctas{margin-top:28px;gap:6px 22px}
+  .hm-booth-wrap{width:min(100%,360px);margin-top:0}
+  .hm-fs.f1{left:-8%}.hm-fs.f2{right:-5%}.hm-fs.f3{left:-6%}
+  /* result: preview di kiri, pilihan template/filter di kanan (sebelumnya satu kolom panjang) */
+  .res-grid{grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:24px;padding-top:24px}
+  .res-grid .card{padding:22px 20px 28px;border-radius:32px}
+  .res-grid .card h3{font-size:20px;margin-bottom:20px}
+  .res-grid .opts{grid-template-columns:repeat(2,1fr)}
+  .res-grid .opt{min-height:60px;font-size:14px}
+  .res-grid .preview{padding:32px 16px}
+  .res-grid .duo{height:60px}.res-grid .duo .btn{height:58px;font-size:17px}
+  #liveBtn{font-size:17px;gap:10px}
+}
+
+/* 5) Phone portrait (<= 700px) */
+@media(max-width:700px){
+  /* hero */
+  .hm-fs.f1{left:-4%;width:46px}
+  #home .hm-ctas{justify-content:center}
+  #home .hm-ghost{margin:0 auto}
+  /* section "photo studio": booth, strip, dan tag tidak saling menimpa */
+  .hm-compose{min-height:340px}
+  .hm-line-booth{width:min(200px,54%);justify-self:start;margin-left:6%}
+  .hm-mini{width:92px;right:2%;top:8%}
+  .hm-tag.t1{top:2%}
+  /* galeri strip: carousel geser horizontal, bukan tumpukan yang membungkus ke beberapa baris */
+  .hm-gallery{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 calc(-1 * var(--m));padding:34px var(--m) 52px}
+  .hm-gallery::-webkit-scrollbar{display:none}
+  .hm-gallery button{flex:none;scroll-snap-align:center}
+  .hm-gallery button canvas{height:300px;max-width:none}
+  /* "photo booth feeling": strip tidak terpotong rak */
+  .hm-curtain-scene{aspect-ratio:1/.95}
+  .hm-clip .hm-fs{width:44px;left:-22px}
+  /* review: 2 kolom kompak supaya 4 foto terlihat sekaligus */
+  .rv-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px;margin:28px auto 36px}
+  .rv-card .btn{height:46px;font-size:13px;margin-top:10px;gap:6px;padding:0 8px;white-space:nowrap}
+  .rv-card .btn svg{width:16px;height:16px}
+  /* tombol berpasangan (Retake / Continue, Live Photo / Retake) muat dalam satu baris */
+  .duo{height:56px;margin-bottom:28px}
+  .duo .btn{height:54px;font-size:16px;white-space:nowrap}
+  .duo .ghost{min-width:0}.duo .dark{flex:0 0 46%}
+  .res-grid .duo .btn,.left .duo .btn{font-size:16px}
+  #liveBtn{font-size:16px;gap:8px}
+  #liveState{font-size:13px;padding:4px 11px}
+  /* result: kartu lebih rapat */
+  .res-grid{padding-top:20px}
+  .card{padding:22px 18px 28px;border-radius:30px}
+  .card h3{font-size:19px;margin-bottom:20px}
+  .preview{padding:28px 14px}
+}
