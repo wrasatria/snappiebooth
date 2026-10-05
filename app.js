@@ -30,23 +30,27 @@ async function startCam() {
   try {
     S.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false });
     $("#cam").srcObject = S.stream; $("#msg").hidden = true; $("#shoot").disabled = false;
+    window.Beauty && Beauty.attach($("#cam"));
   } catch (e) {
     $("#msg").hidden = false; $("#shoot").disabled = true;
     $("#msg").textContent = location.protocol === "http:" && location.hostname !== "localhost"
       ? "Kamera hanya bisa dipakai lewat HTTPS." : "Kamera tidak bisa diakses. Izinkan kamera di pengaturan browser, lalu muat ulang halaman.";
   }
 }
-function stopCam() { S.stream && S.stream.getTracks().forEach(t => t.stop()); S.stream = null; }
+function stopCam() { window.Beauty && Beauty.detach(); S.stream && S.stream.getTracks().forEach(t => t.stop()); S.stream = null; }
 function startRec() {
   if (!MT || !S.stream) return null;
-  const ch = [], r = new MediaRecorder(S.stream, { mimeType: MT });
-  r.ondataavailable = e => e.data.size && ch.push(e.data); r.ch = ch; r.start(); return r;
+  const mk = st => { const ch = [], r = new MediaRecorder(st, { mimeType: MT }); r.ondataavailable = e => e.data.size && ch.push(e.data); r.ch = ch; r.start(); return r; };
+  const fx = window.Beauty && Beauty.recStream();   // filter kulit aktif: rekam dari canvas yang sudah diproses
+  if (fx) { try { return mk(fx); } catch (e) { console.warn("Rekam dari canvas gagal, pakai kamera asli", e); } }
+  return mk(S.stream);
 }
 const stopRec = r => new Promise(res => { if (!r) return res(null); r.onstop = () => res(URL.createObjectURL(new Blob(r.ch, { type: MT }))); r.stop(); });
 
 function snap() {
-  const v = $("#cam"), c = document.createElement("canvas"); c.width = 1280; c.height = 960;
-  const k = Math.max(1280 / v.videoWidth, 960 / v.videoHeight), dw = v.videoWidth * k, dh = v.videoHeight * k;
+  const v = (window.Beauty && Beauty.source()) || $("#cam"), vw = v.videoWidth || v.width, vh = v.videoHeight || v.height;
+  const c = document.createElement("canvas"); c.width = 1280; c.height = 960;
+  const k = Math.max(1280 / vw, 960 / vh), dw = vw * k, dh = vh * k;
   c.getContext("2d").drawImage(v, (1280 - dw) / 2, (960 - dh) / 2, dw, dh);
   const img = new Image(); img.src = c.toDataURL("image/jpeg", .92); return img;
 }
