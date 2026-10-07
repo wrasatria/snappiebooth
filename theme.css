@@ -380,3 +380,64 @@ body[data-page=capture]::after,body[data-page=review]::after,body[data-page=resu
 .fx-note{flex-basis:100%;min-height:0;font:400 13px/1.4 Manrope,sans-serif;color:var(--ro)}
 .fx-note:empty{display:none}
 @media(max-width:1024px){.fx-row + .fx-row{margin-top:8px}.fx-note{text-align:center}}
+
+/* =====================================================================
+   v9: Share sheet + tip jar (download page). Remove this block + share.js to go back to the plain Share button.
+   ===================================================================== */
+body.sh-open{overflow:hidden}
+.share-sheet{position:fixed;inset:0;z-index:58;display:flex;align-items:flex-end;justify-content:center;background:rgba(37,12,9,.62);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:shFade .25s ease both}
+.share-sheet[hidden]{display:none}
+.share-card{position:relative;width:min(100%,460px);max-height:92vh;max-height:92dvh;overflow:auto;background:var(--cr);color:var(--cc);
+  border-radius:28px 28px 0 0;padding:30px 24px calc(26px + env(safe-area-inset-bottom,0px));box-shadow:0 -20px 60px -20px rgba(0,0,0,.5);
+  animation:shUp .32s cubic-bezier(.2,.8,.2,1) both}
+@media(min-width:700px){.share-sheet{align-items:center;padding:24px}.share-card{border-radius:28px;padding-bottom:28px}}
+@keyframes shFade{from{opacity:0}to{opacity:1}}
+@keyframes shUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.share-card h2{margin:0;font:400 36px/1 var(--serif);letter-spacing:-.01em;color:var(--bd)}
+.share-sub{margin:8px 0 22px;font-size:15px;color:#5a4a44}
+.share-x{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(84,23,17,.1);color:var(--bd);font-size:22px;line-height:1;cursor:pointer;transition:background .2s}
+.share-x:hover{background:rgba(84,23,17,.2)}
+.share-native{width:100%;height:56px;border-radius:99px;border:0;background:var(--bd);color:var(--cr);font:500 17px Manrope,sans-serif;cursor:pointer;transition:background .2s,transform .15s}
+.share-native:hover{background:var(--ch)}.share-native:active{transform:scale(.99)}
+.share-hint{margin:10px 4px 0;font-size:13px;line-height:1.45;color:#5a4a44;text-align:center}
+.share-or{display:flex;align-items:center;gap:12px;margin:18px 0 6px;color:#8a7a72;font-size:13px}
+.share-or::before,.share-or::after{content:"";flex:1;height:1px;background:rgba(84,23,17,.18)}
+.share-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:6px}
+.share-grid button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0;border:0;background:none;color:var(--cc);font:500 12px Manrope,sans-serif;white-space:nowrap;cursor:pointer}
+.share-grid .ic{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--bd);color:var(--cr);transition:background .2s,transform .15s}
+.share-grid .ic svg{width:26px;height:26px}
+.share-grid button:hover .ic{background:var(--ch);transform:translateY(-2px)}
+.share-grid button:active .ic{transform:scale(.95)}
+.share-grid button:focus-visible,.share-native:focus-visible,.share-x:focus-visible,.share-open:focus-visible{outline:3px solid var(--ch);outline-offset:3px;border-radius:14px}
+@media(max-width:400px){.share-grid .ic{width:50px;height:50px}.share-grid button{font-size:11px}}
+.share-note{margin:16px 2px 0;font-size:12.5px;line-height:1.5;color:#6b5a52;text-align:center}
+.share-next{margin-top:16px;padding:14px 16px;border-radius:18px;background:rgba(84,23,17,.08);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.share-next[hidden]{display:none}
+.share-next p{margin:0;font-size:13.5px;line-height:1.4;color:var(--bd)}
+.share-open{flex:none;display:inline-flex;align-items:center;height:40px;padding:0 18px;border-radius:99px;background:var(--bd);color:var(--cr);text-decoration:none;font:500 14px Manrope,sans-serif;white-space:nowrap}
+.share-open:hover{background:var(--ch)}
+@media(max-width:420px){.share-next{flex-direction:column;align-items:stretch;text-align:center}.share-open{justify-content:center}}
+
+/* tip jar: kartu tipis dengan QR, muncul halus setelah strip selesai dicetak */
+body[data-page=download] .dl-tip{order:6;display:flex;align-items:center;gap:18px;width:100%;max-width:460px;margin:clamp(22px,3vw,34px) auto 0;padding:16px 18px;
+  border-radius:22px;border:1px solid rgba(245,235,215,.22);background:rgba(245,235,215,.07);color:rgba(245,235,215,.9);transition:opacity .7s .4s,transform .7s .4s}
+.dl-tip[hidden]{display:none}
+.dl-tip-qr{flex:none;width:132px;height:132px;padding:8px;border:0;border-radius:16px;background:#fff;cursor:zoom-in;box-shadow:0 10px 24px -12px rgba(0,0,0,.6);transition:transform .2s}
+.dl-tip-qr:hover{transform:scale(1.03)}
+.dl-tip-qr:focus-visible,.dl-tip-save:focus-visible{outline:3px solid var(--ro);outline-offset:3px}
+.dl-tip-qr img{display:block;width:100%;height:100%;object-fit:contain}
+.dl-tip-copy{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0}
+body[data-page=download] .dl-tip p{order:0;margin:0;max-width:none;font-size:14px;line-height:1.45;text-align:left;color:rgba(245,235,215,.9)}   /* order:0 menimpa aturan umum .dl-copy p */
+body[data-page=download] .dl-tip b{font-weight:500;color:var(--cr)}
+.dl-tip-cap{font-size:12.5px;line-height:1.4;color:rgba(245,235,215,.62)}
+.dl-tip-save{font-size:13px;color:var(--cr);opacity:.9;text-decoration:underline;text-underline-offset:3px}
+.dl-tip-save:hover{opacity:1}
+@media(max-width:560px){body[data-page=download] .dl-tip{flex-direction:column;text-align:center;gap:14px}
+  body[data-page=download] .dl-tip p{text-align:center}.dl-tip-copy{align-items:center}.dl-tip-qr{width:164px;height:164px}}
+#tipZoom img{height:auto;width:min(86vw,420px);padding:14px;border-radius:18px;background:#fff;object-fit:contain;cursor:default}
+body:has(#dlPrinter:not([data-state="ready"])) .dl-tip{opacity:0;transform:translateY(10px);pointer-events:none}
+@media(prefers-reduced-motion:reduce){.share-sheet,.share-card{animation:none}.dl-tip{transition:none!important}}
+
+/* notifikasi tampil di atas saat lembar Share terbuka, supaya tidak menutupi tombol di bawah */
+body.sh-open .dl-toast{bottom:auto;top:max(20px,env(safe-area-inset-top,0px));z-index:70}

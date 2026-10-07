@@ -1,7 +1,11 @@
-/* ar.js - efek wajah real-time (Love, Sparkle, Blush) untuk halaman capture.
+/* ar.js - efek wajah real-time (Love, Sparkle) untuk halaman capture.
    Pelacakan wajah: MediaPipe Face Landmarker (jalan sepenuhnya di perangkat, tidak ada foto yang dikirim ke server).
-   Dimuat LAZY: library + model (~4 MB) baru diunduh saat user pertama kali memilih efek, jadi
-   user yang tidak memakai efek tidak membayar apa pun. Semua gambar efek digambar vektor di canvas (tanpa aset).
+   Kecepatan:
+   - Model + runtime diunduh PARALEL (dulu berurutan) dan dipanaskan di cache browser.
+   - Mulai diunduh di latar belakang begitu halaman capture dibuka (kecuali Data Saver / koneksi lambat),
+     jadi saat user menekan efek biasanya sudah siap.
+   - Laju deteksi menyesuaikan kekuatan perangkat (HP lemah otomatis lebih jarang mendeteksi).
+   Semua gambar efek digambar vektor di canvas (tanpa aset).
    Gagal-aman: kalau library/model gagal dimuat, efek dimatikan dan kamera tetap normal. */
 (function () {
   "use strict";
@@ -13,30 +17,46 @@
   const $ = s => document.querySelector(s);
   const row = $("#arRow"), msg = $("#arMsg");
   if (!row) return;
-  const NONE = "none", EFFECTS = ["love", "sparkle", "blush"];
+  const NONE = "none", EFFECTS = ["love", "sparkle"];
 
-  /* ---------- pemuatan model (lazy) ---------- */
-  let lm = null, loading = null, errs = 0, lastDet = 0, lastT = -1;
+  /* ---------- pemuatan model ---------- */
+  let lm = null, loading = null, errs = 0, lastDet = 0, lastT = -1, detMs = 0, interval = 45;
+  const conn = navigator.connection || {};
+  const canPreload = !conn.saveData && (!conn.effectiveType || conn.effectiveType === "4g");
+
+  const fetchModel = () => fetch(MODEL).then(r => { if (!r.ok) throw new Error("model " + r.status); return r.arrayBuffer(); }).then(b => new Uint8Array(b));
   async function load() {
     if (lm) return lm;
     if (loading) return loading;
     loading = (async () => {
+      const modelP = fetchModel();                                            // unduh model sambil library dimuat (paralel)
+      modelP.catch(() => {});                                                  // cegah "unhandled rejection" kalau gagal
+      ["/wasm/vision_wasm_internal.js", "/wasm/vision_wasm_internal.wasm"].forEach(f => fetch(MP_BASE + f).catch(() => {}));   // hangatkan cache runtime
       const mod = await import(MP_BASE + "/vision_bundle.mjs");
       const vision = await mod.FilesetResolver.forVisionTasks(MP_BASE + "/wasm");
-      const make = delegate => mod.FaceLandmarker.createFromOptions(vision, {
-        baseOptions: { modelAssetPath: MODEL, delegate },
-        runningMode: "VIDEO", numFaces: 3,
-        minFaceDetectionConfidence: .5, minFacePresenceConfidence: .5, minTrackingConfidence: .5,
-        outputFaceBlendshapes: false
+      const opts = base => ({
+        baseOptions: base, runningMode: "VIDEO", numFaces: 3,
+        minFaceDetectionConfidence: .5, minFacePresenceConfidence: .5, minTrackingConfidence: .5, outputFaceBlendshapes: false
       });
-      try { lm = await make("GPU"); } catch (e) { console.warn("GPU delegate gagal, pakai CPU", e); lm = await make("CPU"); }
-      return lm;
+      let buf = null; try { buf = await modelP; } catch (e) { console.warn("Model gagal diunduh paralel, coba lewat library", e); }
+      const tries = [];
+      if (buf) { tries.push(() => mod.FaceLandmarker.createFromOptions(vision, opts({ modelAssetBuffer: buf.slice(), delegate: "GPU" })));
+                 tries.push(() => mod.FaceLandmarker.createFromOptions(vision, opts({ modelAssetBuffer: buf.slice(), delegate: "CPU" }))); }
+      tries.push(() => mod.FaceLandmarker.createFromOptions(vision, opts({ modelAssetPath: MODEL, delegate: "CPU" })));
+      let last = null;
+      for (const t of tries) { try { lm = await t(); return lm; } catch (e) { last = e; console.warn("Inisialisasi face landmarker gagal, coba cara lain", e); } }
+      throw last;
     })();
     try { return await loading; } finally { loading = null; }
   }
+  /* unduh di latar belakang saat halaman capture terbuka (hanya jika koneksi memadai) */
+  function preload() { if (canPreload && !lm && !loading && !AR.provider) load().catch(() => {}); }
+  const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 1200));
+  new MutationObserver(() => { if (document.body.dataset.page === "capture") idle(preload); }).observe(document.body, { attributes: true, attributeFilter: ["data-page"] });
+  if (document.body.dataset.page === "capture") idle(preload);
 
   /* ---------- deteksi + penghalusan pose per wajah ---------- */
-  const IDX = { top: 10, chin: 152, left: 234, right: 454, eyeL: 33, eyeR: 263 };   // hanya titik tepi wajah + sudut mata (indeks standar FaceMesh)
+  const IDX = { top: 10, chin: 152, left: 234, right: 454, eyeL: 33, eyeR: 263 };   // titik tepi wajah + sudut mata (indeks standar FaceMesh)
   let tracks = [];
   const lerp = (a, b, k) => a + (b - a) * k;
 
@@ -96,13 +116,7 @@
   function drawFace(c, t, kind, now) {
     const s = now / 1000, cr = Math.cos(t.roll), sr = Math.sin(t.roll);
     const at = (u, v) => ({ x: t.top.x + cr * u * t.fw + sr * v * t.fh, y: t.top.y + sr * u * t.fw - cr * v * t.fh });   // right=(cr,sr), up=(sr,-cr)
-    if (kind === "blush") {
-      [at(-.27, -.58), at(.27, -.58)].forEach(p => {   // pipi: +-27% lebar wajah dari tengah, 58% ke bawah dari dahi
-        const r = t.fw * .22, g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-        g.addColorStop(0, "rgba(255,92,128," + (.34 * t.a) + ")"); g.addColorStop(.6, "rgba(255,110,140," + (.2 * t.a) + ")"); g.addColorStop(1, "rgba(255,110,140,0)");
-        c.fillStyle = g; c.beginPath(); c.ellipse(p.x, p.y, r * 1.15, r * .85, t.roll, 0, 7); c.fill();
-      });
-    } else if (kind === "love") {
+    if (kind === "love") {
       LOVE.forEach(([u, v, z], i) => {
         const bob = Math.sin(s * 2.2 + i * 1.3) * .035, pulse = 1 + Math.sin(s * 3 + i * 1.7) * .07, p = at(u, v + bob);
         heart(c, p.x, p.y, z * t.fw * pulse, t.roll + Math.sin(s * 1.5 + i) * .12, .93 * t.a);
@@ -122,9 +136,12 @@
     draw(c, w, h, video, now) {
       if (this.effect === NONE) return;
       try {
-        if (now - lastDet > 45 && video.currentTime !== lastT) {   // deteksi ~20fps, gambar tiap frame
+        if (now - lastDet > interval && video.currentTime !== lastT) {   // deteksi berkala, gambar tiap frame
           lastDet = now; lastT = video.currentTime;
-          const faces = this.provider ? this.provider(video, now) : (lm ? (lm.detectForVideo(video, performance.now()).faceLandmarks || []) : []);
+          const t0 = performance.now();
+          const faces = this.provider ? this.provider(video, now) : (lm ? (lm.detectForVideo(video, t0).faceLandmarks || []) : []);
+          detMs = lerp(detMs, performance.now() - t0, .3);
+          interval = Math.min(140, Math.max(45, detMs * 2.2));          // perangkat lambat -> deteksi lebih jarang, kamera tetap mulus
           update(faces, w, h, now); errs = 0;
         }
       } catch (e) { if (++errs > 8) { console.warn("Deteksi wajah dimatikan:", e); this.set(NONE); setMsg("Face effects stopped. Try again."); } }

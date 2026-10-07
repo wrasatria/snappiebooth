@@ -205,8 +205,7 @@ function dlToast(msg) {
   const t = $("#dlToast"); t.textContent = msg; t.hidden = false;
   clearTimeout(t._h); t._h = setTimeout(() => t.hidden = true, 2600);
 }
-$("#dlShare").onclick = async () => {
-  if (dlPhase !== "ready") return;
+async function legacyShare() {   // cadangan kalau share.js tidak termuat
   try {
     drawStrip(S.photos);
     const blob = await new Promise(res => cv.toBlob(res, "image/png"));
@@ -221,7 +220,8 @@ $("#dlShare").onclick = async () => {
     }
   } catch (e) { if (e.name !== "AbortError") dlToast("Gagal berbagi. Coba download saja."); }
   render();
-};
+}
+$("#dlShare").onclick = () => { if (dlPhase !== "ready") return; window.Share ? Share.open() : legacyShare(); };
 
 /* ---------- pengaturan countdown ---------- */
 $("#cdSeg").onclick = e => {
