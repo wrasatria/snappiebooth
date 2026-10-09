@@ -29,7 +29,8 @@
       <h2>Strip Layout Template</h2>
       <button class="lime" id="newBtn">+ Template Baru</button>
     </div>
-    <p id="listMsg" class="hint"></p>
+    <p class="hint" id="orderHint">Seret ikon <b>⋮⋮</b> di kiri untuk mengubah urutan (urutan 1 tampil paling awal). Tersimpan otomatis. Pakai panah atas/bawah kalau memakai keyboard.</p>
+    <p id="listMsg" class="hint" role="status" aria-live="polite"></p>
     <div id="list"></div>
 
     <div id="editor" hidden>
@@ -51,7 +52,7 @@
           <label>Warna tulisan<input id="fInk" type="color" value="#111111"></label></div>
           <div class="two"><label>Posisi Y tulisan<input id="fTy" type="number" value="0"></label>
           <label>Ukuran tulisan (0=sembunyikan)<input id="fFs" type="number" value="0"></label></div>
-          <div class="two"><label>Urutan tampil<input id="fSort" type="number" value="0"></label>
+          <div class="two"><label hidden>Urutan tampil<input id="fSort" type="number" value="0"></label>
           <label class="chk"><input id="fActive" type="checkbox" checked> Tampilkan ke pengguna</label></div>
           <label>Frame PNG (latar transparan, ukuran = lebar × tinggi di atas)
             <input id="fFrame" type="file" accept="image/png"></label>

@@ -24,3 +24,10 @@ header{background:var(--bd);border-bottom:0}
 .logo b{background:var(--cr);color:var(--bd)}
 header button{background:transparent;color:var(--cr);border-color:rgba(245,235,215,.55)}
 header button:hover{background:rgba(245,235,215,.14)}
+
+.row-item .grip{color:rgba(84,23,17,.45)}
+.row-item .grip:hover{background:var(--cr);color:var(--bd)}
+.row-item .rank{background:var(--cr);color:var(--bd)}
+.row-item.is-home .rank{background:var(--bd);color:var(--cr)}
+.row-item .hp{background:rgba(84,23,17,.1);color:var(--bd)}
+.row-item.dragging{background:#fff;border-color:var(--bd)}

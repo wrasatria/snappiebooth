@@ -23,17 +23,97 @@ $("#loginForm").onsubmit = async e => {
 $("#logout").onclick = () => SB.auth.signOut();
 
 /* ---------- daftar template ---------- */
+const HOME_COUNT = 4;   // harus sama dengan GALLERY_MAX di home.js: jumlah strip aktif teratas yang tampil di homepage
+const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 async function loadList() {
   const { data, error } = await SB.from("templates").select("*").order("sort_order", { ascending: true });
   if (error) { $("#listMsg").textContent = "Gagal memuat: " + error.message; return; }
   rowsCache = data; $("#listMsg").textContent = "";
   $("#list").innerHTML = data.map(t => `
-    <div class="row-item">
-      <span>${t.active ? "🟢" : "⚪"} <b>${t.name}</b><small>${t.id} · ${t.w}×${t.h}</small></span>
-      <span><button data-edit="${t.id}">Edit</button><button data-del="${t.id}">Hapus</button></span>
+    <div class="row-item" data-id="${esc(t.id)}" data-active="${t.active ? 1 : 0}">
+      <span class="lft">
+        <button type="button" class="grip" aria-label="Ubah urutan ${esc(t.name)}: seret, atau tekan panah atas/bawah" title="Seret untuk mengubah urutan">&#8942;&#8942;</button>
+        <i class="rank"></i>
+        <span class="nm">${t.active ? "🟢" : "⚪"} <b>${esc(t.name)}</b><small>${esc(t.id)} · ${t.w}×${t.h}</small><em class="hp" hidden>Tampil di homepage</em></span>
+      </span>
+      <span class="act"><button data-edit="${esc(t.id)}">Edit</button><button data-del="${esc(t.id)}">Hapus</button></span>
     </div>`).join("") || "<p class='hint'>Belum ada template. Klik \"Template Baru\".</p>";
   $$("[data-edit]").forEach(b => b.onclick = () => openForm(rowsCache.find(t => t.id === b.dataset.edit)));
   $$("[data-del]").forEach(b => b.onclick = () => delTemplate(b.dataset.del));
+  refreshRanks(); initReorder();
+}
+/* nomor urut + penanda "Tampil di homepage" (HOME_COUNT template AKTIF teratas) mengikuti urutan baris saat ini */
+function refreshRanks() {
+  let shown = 0;
+  $$("#list .row-item").forEach((el, i) => {
+    el.querySelector(".rank").textContent = i + 1;
+    const on = el.dataset.active === "1" && shown < HOME_COUNT; if (on) shown++;
+    el.querySelector(".hp").hidden = !on; el.classList.toggle("is-home", on);
+  });
+}
+/* simpan urutan baru: nomor unik 1..n, hanya baris yang berubah yang ditulis */
+let saveTimer = null;
+function saveOrder() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const ids = $$("#list .row-item").map(el => el.dataset.id);
+    const changed = ids.map((id, i) => ({ id, order: i + 1 })).filter(x => (rowsCache.find(r => r.id === x.id) || {}).sort_order !== x.order);
+    if (!changed.length) return;
+    $("#listMsg").textContent = "Menyimpan urutan…";
+    const res = await Promise.all(changed.map(x => SB.from("templates").update({ sort_order: x.order }).eq("id", x.id)));
+    const bad = res.find(r => r.error);
+    if (bad) { $("#listMsg").textContent = "Gagal menyimpan urutan: " + bad.error.message; return loadList(); }
+    changed.forEach(x => { const r = rowsCache.find(r => r.id === x.id); if (r) r.sort_order = x.order; });
+    rowsCache.sort((a, b) => a.sort_order - b.sort_order);
+    $("#listMsg").textContent = "Urutan tersimpan.";
+    setTimeout(() => { if ($("#listMsg").textContent === "Urutan tersimpan.") $("#listMsg").textContent = ""; }, 2200);
+  }, 250);
+}
+/* seret ikon ⋮⋮ (mouse atau sentuh). Panah atas/bawah di ikon yang sedang fokus = keyboard */
+function initReorder() {
+  const list = $("#list");
+  list.querySelectorAll(".grip").forEach(g => {
+    g.onkeydown = e => {
+      const row = g.closest(".row-item");
+      if (e.key === "ArrowUp" && row.previousElementSibling) { e.preventDefault(); list.insertBefore(row, row.previousElementSibling); }
+      else if (e.key === "ArrowDown" && row.nextElementSibling) { e.preventDefault(); list.insertBefore(row.nextElementSibling, row); }
+      else return;
+      g.focus(); refreshRanks(); saveOrder();
+    };
+    g.onpointerdown = e => {
+      if (e.button != null && e.button !== 0) return;
+      e.preventDefault();
+      const row = g.closest(".row-item"), startOrder = $$("#list .row-item").map(x => x.dataset.id).join();
+      const grab = e.clientY - row.getBoundingClientRect().top;
+      let y = e.clientY, raf = 0;
+      row.classList.add("dragging"); list.classList.add("sorting");
+      const place = () => {
+        const siblings = [...list.children].filter(x => x !== row && x.classList.contains("row-item"));
+        const mid = y - grab + row.offsetHeight / 2;                        // titik tengah baris yang sedang diseret
+        const next = siblings.find(s => { const r = s.getBoundingClientRect(); return mid < r.top + r.height / 2; });
+        if (next) { if (row.nextElementSibling !== next) list.insertBefore(row, next); }
+        else if (row.nextElementSibling) list.appendChild(row);
+        row.style.transform = "none";                                       // ukur posisi layout baru, lalu geser agar menempel ke kursor
+        row.style.transform = `translateY(${y - grab - row.getBoundingClientRect().top}px)`;
+        refreshRanks();
+      };
+      const tick = () => {                                                  // gulir otomatis saat dekat tepi layar
+        const edge = 70, h = innerHeight;
+        if (y < edge) scrollBy(0, -Math.ceil((edge - y) / 5)); else if (y > h - edge) scrollBy(0, Math.ceil((y - (h - edge)) / 5));
+        place(); raf = requestAnimationFrame(tick);
+      };
+      /* dengarkan di window, bukan di ikon: memindahkan elemen di DOM melepas "pointer capture" milik elemen itu */
+      const move = ev => { y = ev.clientY; };
+      const end = () => {
+        cancelAnimationFrame(raf);
+        removeEventListener("pointermove", move); removeEventListener("pointerup", end); removeEventListener("pointercancel", end);
+        row.classList.remove("dragging"); row.style.transform = ""; list.classList.remove("sorting"); refreshRanks();
+        if ($$("#list .row-item").map(x => x.dataset.id).join() !== startOrder) saveOrder();
+      };
+      addEventListener("pointermove", move); addEventListener("pointerup", end); addEventListener("pointercancel", end);
+      raf = requestAnimationFrame(tick);
+    };
+  });
 }
 async function delTemplate(id) {
   if (!confirm("Hapus template ini? Tidak bisa dibatalkan.")) return;
@@ -52,7 +132,8 @@ function openForm(t) {
   $("#fId").value = t?.id || ""; $("#fId").disabled = !!t;
   $("#fName").value = t?.name || ""; $("#fW").value = t?.w || 600; $("#fH").value = t?.h || 1792;
   $("#fBg").value = t?.bg || "#ffffff"; $("#fInk").value = t?.ink || "#111111";
-  $("#fTy").value = t?.ty || 0; $("#fFs").value = t?.fs || 0; $("#fSort").value = t?.sort_order || 0;
+  $("#fTy").value = t?.ty || 0; $("#fFs").value = t?.fs || 0;
+  $("#fSort").value = t ? (t.sort_order || 0) : (Math.max(0, ...rowsCache.map(r => r.sort_order || 0)) + 1);   // template baru masuk paling bawah; geser di daftar untuk memindahkan
   $("#fActive").checked = t ? t.active : true; $("#fFrame").value = "";
   SLOTS = t?.slots ? JSON.parse(JSON.stringify(t.slots)) : [{ x: 40, y: 40, w: 520, h: 390 }, { x: 40, y: 454, w: 520, h: 390 }, { x: 40, y: 868, w: 520, h: 390 }, { x: 40, y: 1282, w: 520, h: 390 }];
   SLOTS.forEach(s => { s.r ??= 0; s.radius ??= 0; });
