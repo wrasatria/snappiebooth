@@ -34,7 +34,7 @@ async function startCam() {
   } catch (e) {
     $("#msg").hidden = false; $("#shoot").disabled = true;
     $("#msg").textContent = location.protocol === "http:" && location.hostname !== "localhost"
-      ? "Kamera hanya bisa dipakai lewat HTTPS." : "Kamera tidak bisa diakses. Izinkan kamera di pengaturan browser, lalu muat ulang halaman.";
+      ? "The camera only works over HTTPS. You can still upload photos from your gallery." : "Camera isn't available. Allow camera access in your browser settings and reload, or upload photos from your gallery.";
   }
 }
 function stopCam() { window.Beauty && Beauty.detach(); S.stream && S.stream.getTracks().forEach(t => t.stop()); S.stream = null; }
@@ -56,14 +56,14 @@ function snap() {
 }
 $("#shoot").onclick = async () => {
   if (S.busy || !S.stream) return;
-  S.busy = true; $("#shoot").disabled = true;
+  S.busy = true; $("#shoot").disabled = true; document.body.classList.add("is-busy");
   const i = S.retake ?? S.photos.length; let rec = null;
   for (let c = S.cd; c >= 1; c--) { $("#count").textContent = c; if (c === Math.min(2, S.cd)) rec = startRec(); await wait(1000); }
   $("#count").textContent = "";
   const f = $("#flash"); f.classList.remove("on"); void f.offsetWidth; f.classList.add("on");
   const img = snap(); await wait(500);
   S.clips[i] = await stopRec(rec); S.photos[i] = img; await img.decode().catch(() => {});
-  renderThumbs(); S.busy = false; $("#shoot").disabled = false;
+  renderThumbs(); S.busy = false; document.body.classList.remove("is-busy"); $("#shoot").disabled = false;
   if (S.retake !== null) { S.retake = null; go("review"); }
   else if (S.photos.filter(Boolean).length === 4) { await wait(600); go("review"); }
 };

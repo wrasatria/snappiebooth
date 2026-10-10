@@ -441,3 +441,51 @@ body:has(#dlPrinter:not([data-state="ready"])) .dl-tip{opacity:0;transform:trans
 
 /* notifikasi tampil di atas saat lembar Share terbuka, supaya tidak menutupi tombol di bawah */
 body.sh-open .dl-toast{bottom:auto;top:max(20px,env(safe-area-inset-top,0px));z-index:70}
+
+/* =====================================================================
+   v10: Upload photos option (capture page). Remove this block + upload.js to drop the feature.
+   ===================================================================== */
+.stage-frame.drop .stage{outline:3px dashed var(--cr);outline-offset:-12px}
+.stage-frame.drop .stage::after{content:"Drop photos here";position:absolute;inset:0;display:grid;place-items:center;z-index:6;background:rgba(37,12,9,.55);color:var(--cr);font:italic 400 34px var(--serif);pointer-events:none}
+/* notifikasi di halaman capture/review tampil di atas supaya tidak menutupi tombol Continue/Retake */
+body[data-page=capture] .dl-toast,body[data-page=review] .dl-toast{bottom:auto;top:max(18px,env(safe-area-inset-top,0px))}
+
+/* =====================================================================
+   v11: Capture dock (layout kontrol di bawah kamera dirapikan).
+   Hierarki: 1 tombol utama (Capture) + timer; 3 tombol sekunder seragam; efek disimpan di panel yang bisa dibuka.
+   Remove this block + capture-ui.js and restore the old markup to go back.
+   ===================================================================== */
+.dock{display:flex;flex-direction:column;gap:14px;max-width:1181px;margin:30px auto 0;padding-bottom:36px;
+  padding-right:calc(clamp(170px,17.4vw,250px) + clamp(28px,5.8vw,84px))}
+@media(max-width:1024px){.dock{padding-right:0;margin-top:20px}}
+.dock-main{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap}
+.dock-main #shoot{flex:1 1 240px;width:auto;height:60px;font-size:18px;white-space:nowrap}
+.dock-main .seg{flex:0 0 auto;height:60px;margin:0;padding:0 8px 0 18px;background:rgba(245,235,215,.06);border:1px solid rgba(245,235,215,.3)}
+.dock-main .seg svg{color:rgba(245,235,215,.8)}
+.dock-main .seg button{height:44px;min-width:52px;font-size:16px;color:var(--cr)}
+.dock-main .seg button.on{background:var(--cr);color:var(--bd)}
+@media(max-width:700px){.dock-main .seg{flex:1 1 100%}.dock-main .seg button{flex:1}}
+.dock-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tool{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 12px;border-radius:99px;
+  border:1px solid rgba(245,235,215,.3);background:rgba(245,235,215,.06);color:var(--cr);font:500 14.5px Manrope,sans-serif;white-space:nowrap;cursor:pointer;
+  transition:background .2s,color .2s,border-color .2s,transform .15s}
+.tool svg{width:18px;height:18px;flex:none}
+.tool:hover{background:rgba(245,235,215,.16)}
+.tool:active{transform:scale(.98)}
+.tool.on{background:var(--cr);color:var(--bd);border-color:var(--cr)}
+.tool:focus-visible{outline:3px solid var(--ro);outline-offset:3px}
+.tool[hidden]{display:none}
+.tool .dot{width:8px;height:8px;border-radius:50%;background:var(--ro);flex:none}
+.tool .dot[hidden]{display:none}
+.tool.on .dot{background:var(--ch)}
+body.is-busy .tool{opacity:.45;pointer-events:none}
+@media(max-width:520px){.tl-x{display:none}.tool{font-size:13.5px;padding:0 8px;gap:6px}}
+/* panel efek */
+.fx-tray{display:flex;flex-direction:column;gap:12px;padding:14px 16px;border-radius:22px;background:rgba(245,235,215,.06);border:1px solid rgba(245,235,215,.16)}
+.fx-tray[hidden]{display:none}
+.fx-tray .fx-row{margin:0;padding:0;max-width:none;justify-content:flex-start;gap:8px}
+.fx-tray .fx-row + .fx-row{margin-top:0}
+.fx-tray .fx-lab{flex:0 0 136px;width:136px;margin:0;justify-content:flex-start;font-size:11.5px;white-space:nowrap}
+.fx-tray .fx-chip{height:38px;padding:0 16px;font-size:13.5px}
+.fx-tray .fx-note{padding-left:144px}
+@media(max-width:520px){.fx-tray .fx-lab{flex-basis:100%;width:100%}.fx-tray .fx-note{padding-left:0;text-align:left}}
